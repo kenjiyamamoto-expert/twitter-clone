@@ -1,24 +1,67 @@
-# README
+# DB設計
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## usersテーブル
+|Column|Type|Options|
+|------|----|-------|
+|email|string|null: false|
+|password|string|null: false|
+|username|string|null: false|
+|image|string||
+|text|text||
+### Association
+- has_many :tweets
+- has_many :comments
 
-Things you may want to cover:
 
-* Ruby version
+## tweetsテーブル
+|Column|Type|Options|
+|------|----|-------|
+|title|text|null: false|
+|text|text|null: false|
+|user_id|integer|null: false, foreign_key: true|
+### Association
+- belongs_to :user
+- has_many :comments
+- has_many :tweets_tags
+- has_many  :tags,  through:  :tweets_tags
 
-* System dependencies
 
-* Configuration
+## likesテーブル
+|Column|Type|Options|
+|------|----|-------|
+|user_id|integer|null: false|
+|tweet_id|integer|null: false|
 
-* Database creation
+### Association
+- belongs_to :user
+- has_many :comments
+- has_many :tweets_tags
+- has_many  :tags,  through:  :tweets_tags
 
-* Database initialization
 
-* How to run the test suite
+## tagsデーブル
+|Column|Type|Options|
+|------|----|-------|
+|text|text|null: false|
+### Association
+- has_many :tweets_tags
+- has_many  :tweet,  through:  :tweets_tags
 
-* Services (job queues, cache servers, search engines, etc.)
+## tweets_tagsテーブル
+|Column|Type|Options|
+|------|----|-------|
+|tweet_id|integer|null: false, foreign_key: true|
+|tag_id|integer|null: false, foreign_key: true|
+### Association
+- belongs_to :tweet
+- belongs_to :tag
 
-* Deployment instructions
-
-* ...
+## commentsテーブル
+|Column|Type|Options|
+|------|----|-------|
+|text|text|null: false|
+|user_id|integer|null: false, foreign_key: true|
+|group_id|integer|null: false, foreign_key: true|
+### Association
+- belongs_to :tweet
+- belongs_to :user
